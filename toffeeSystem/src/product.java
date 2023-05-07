@@ -6,17 +6,16 @@ public class product{
     private String category;
     product(int id, double productPrice, String Name, String Categ, double discount){
         this.id = id;
-        this.price = productPrice;
         this.name = Name;
         this.category = Categ;
         this.Discount = discount;
-        this.price = price - price*this.Discount;
+        this.price = productPrice - productPrice*(discount/100);
     }
     int getID(){
         return id;
     }
     void setPrice(double price){
-        this.price = price - price*Discount;
+        this.price = price - price*(Discount/100);
 
     }
     double getPrice(){
@@ -38,4 +37,4 @@ public class product{
     String getCategory(){
         return this.category;
     }
-};
+}
