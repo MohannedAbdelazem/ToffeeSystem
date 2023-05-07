@@ -220,29 +220,28 @@ public class Stock {
             }
         }
     }
-    public void DecrementProductSize(int productID){
+    public void DecrementProductSize(int productID, int Ammount){
         if(!CheckProductByID(productID)){
             System.out.println("Product of id "+ productID+ " does not exist");
             return;
         }
         for(int i = 0;i<products.size();i++){
             if(productID == products.get(i).getID()){
-                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()-1));
+                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()-Ammount));
                 return;
             }
         }
     }
-    public void IncrementProductSize(int productID){
+    public void IncrementProductSize(int productID, int Ammount){
         if(!CheckProductByID(productID)){
             System.out.println("Product of id "+ productID+ " does not exist");
             return;
         }
         for(int i = 0;i<products.size();i++){
             if(productID == products.get(i).getID()){
-                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()+1));
+                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()+Ammount));
                 return;
             }
         }
     }
-
 };
