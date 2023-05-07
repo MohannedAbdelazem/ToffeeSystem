@@ -9,11 +9,11 @@ public class Stock {
     void RefreshProducts(){
         products.clear();
         try{
-            String SQL = "SELECT ID, name, price, discount, category from STOCK";
+            String SQL = "SELECT ID, name, price, discount, category, size from STOCK";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while(rs.next()){
-                product p = new product(rs.getInt("ID"), rs.getDouble("price"), rs.getString("name"), rs.getString("category"), rs.getDouble(("discount")));
+                product p = new product(rs.getInt("ID"), rs.getDouble("price"), rs.getString("name"), rs.getString("category"), rs.getDouble("discount"), rs.getInt("size"));
                 products.add(p);
             }
 
@@ -41,7 +41,7 @@ public class Stock {
         }
         try{
             Statement st = c.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS STOCK(ID integer primary key, name string, price Double, discount Double, category String )");
+            st.execute("CREATE TABLE IF NOT EXISTS STOCK(ID integer primary key, name string, price Double, discount Double, category String, size String )");
 
         }
         catch (Exception e){
@@ -49,11 +49,11 @@ public class Stock {
             System.out.println(e.getMessage());
         }
         try{
-            String SQL = "SELECT ID, name, price, discount, category from STOCK";
+            String SQL = "SELECT ID, name, price, discount, category, size from STOCK";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while(rs.next()){
-                product p = new product(rs.getInt("ID"), rs.getDouble("price"), rs.getString("name"), rs.getString("category"), rs.getDouble(("discount")));
+                product p = new product(rs.getInt("ID"), rs.getDouble("price"), rs.getString("name"), rs.getString("category"), rs.getDouble("discount"), rs.getInt("size"));
                 products.add(p);
             }
 
@@ -62,8 +62,8 @@ public class Stock {
             System.out.println(e.getMessage());
         }
     }
-    public void AddNewProduct(int id, double productPrice, String Name, String Categ, double Discount){
-        product pd = new product(id, productPrice, Name, Categ, Discount);
+    public void AddNewProduct(int id, double productPrice, String Name, String Categ, double Discount, int size){
+        product pd = new product(id, productPrice, Name, Categ, Discount, size);
         boolean flag = true;
         if(this.products != null){
             for(int i = 0;i<products.size();i++){
@@ -77,13 +77,14 @@ public class Stock {
             try {
                 products.add(pd);
 //                String SQL = "INSERT INTO STOCK (ID, name, price, discount, category) VALUES("+id+","+Name+","+productPrice+","+Discount+","+Categ+")";
-                String SQL = "INSERT INTO STOCK (ID, name, price, discount, category) VALUES(?, ?, ?, ?, ?)";
+                String SQL = "INSERT INTO STOCK (ID, name, price, discount, category, size) VALUES(?, ?, ?, ?, ?, ?)";
                 PreparedStatement stt = c.prepareStatement(SQL);
                 stt.setInt(1, id);
                 stt.setString(2, Name);
                 stt.setDouble(3, productPrice);
                 stt.setDouble(4, Discount);
                 stt.setString(5, Categ);
+                stt.setInt(6, size);
                 stt.executeUpdate();
                 System.out.println("product added successfully");
             }
@@ -102,9 +103,9 @@ public class Stock {
                 System.out.println("Stock is empty");
                 return;
             }
-            System.out.printf("ID                  Name                Price               Discount            Category\n");
+            System.out.printf("ID                  Name                Price               Discount            Category            Size\n");
             for(int i = 0;i<products.size();i++){
-                System.out.printf("%-20d%-20s%-20.2f%-20.2f%-20s\n", products.get(i).getID(), products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDiscount(), products.get(i).getCategory());
+                System.out.printf("%-20d%-20s%-20.2f%-20.2f%-20s%-20d\n", products.get(i).getID(), products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDiscount(), products.get(i).getCategory(), products.get(i).getSize());
             }
 
     }
@@ -137,6 +138,12 @@ public class Stock {
                 st.executeUpdate();
                 RefreshProducts();
 
+            }
+            else if(Attribute.equalsIgnoreCase("size")){
+                st.setInt(1, Integer.parseInt(Value));
+                st.setInt(2, IDcpy);
+                st.executeUpdate();
+                RefreshProducts();
             }
             else{
                 System.out.println("Please specify a valid entry (name/price/category/discount) to update");
@@ -189,9 +196,10 @@ public class Stock {
         RefreshProducts();
     }
     public static void main(String[] args) {
+//        AddNewProduct(int id, double productPrice, String Name, String Categ, double Discount, int size){
         Stock st = new Stock();
-//        st.DisplayProducts();
-//        st.deleteProduct(2);
+//        st.AddNewProduct(0, 500, "Mohanned", "Chocolates", 0.0, 1);
+//        st.AddNewProduct(1, 1, "Niggaz", "Slaves", 50.0, 2000);
         st.DisplayProducts();
     }
 };

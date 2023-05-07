@@ -1,15 +1,23 @@
 public class product{
+    private int size;
     private int id;
     private double price;
     private String name;
     private double Discount;
     private String category;
-    product(int id, double productPrice, String Name, String Categ, double discount){
+    product(int id, double productPrice, String Name, String Categ, double discount, int Size){
         this.id = id;
         this.name = Name;
         this.category = Categ;
         this.Discount = discount;
         this.price = productPrice - productPrice*(discount/100);
+        this.size = Size;
+    }
+    public void SetSize(int newSize){
+        this.size = newSize;
+    }
+    public int getSize(){
+        return size;
     }
     int getID(){
         return id;
