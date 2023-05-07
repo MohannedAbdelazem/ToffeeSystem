@@ -24,7 +24,7 @@ public class Stock {
         products = new ArrayList<product>();
         try{
             c = DriverManager.getConnection("jdbc:sqlite:./StockDB.db");
-            File f = new File("./StockDB.db");
+
 
         }
         catch (Exception e){
@@ -94,7 +94,7 @@ public class Stock {
         else{
             System.out.println("Can't add a new product since you have a product with the same ID");
         }
-        RefreshProducts();
+
     }
     public void DisplayProducts(){
             if(products.size() == 0){
