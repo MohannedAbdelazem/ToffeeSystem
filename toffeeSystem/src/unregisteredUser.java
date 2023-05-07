@@ -10,9 +10,4 @@ public class unregisteredUser {
         st.printProduct(productName);
     }
 
-    public static void main(String[] args) {
-        unregisteredUser uu = new unregisteredUser();
-//        uu.viewProducts();
-        uu.searchItem("Niggaz");
-    }
 }

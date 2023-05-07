@@ -1,5 +1,3 @@
-import com.sun.source.tree.TryTree;
-
 import java.util.ArrayList;
 import java.sql.*;
 import java.io.*;
@@ -230,6 +228,18 @@ public class Stock {
         for(int i = 0;i<products.size();i++){
             if(productID == products.get(i).getID()){
                 UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()-1));
+                return;
+            }
+        }
+    }
+    public void IncrementProductSize(int productID){
+        if(!CheckProductByID(productID)){
+            System.out.println("Product of id "+ productID+ " does not exist");
+            return;
+        }
+        for(int i = 0;i<products.size();i++){
+            if(productID == products.get(i).getID()){
+                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()+1));
                 return;
             }
         }
