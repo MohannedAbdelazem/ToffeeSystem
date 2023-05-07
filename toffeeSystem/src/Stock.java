@@ -5,7 +5,7 @@ import java.sql.*;
 import java.io.*;
 public class Stock {
     private ArrayList<product> products;
-    Connection c;
+    private Connection c;
     void RefreshProducts(){
         products.clear();
         try{
@@ -234,15 +234,5 @@ public class Stock {
             }
         }
     }
-    public static void main(String[] args) {
-//        AddNewProduct(int id, double productPrice, String Name, String Categ, double Discount, int size){
-        Stock st = new Stock();
-//        st.AddNewProduct(0, 500, "Mohanned", "Chocolates", 0.0, 1);
-//        st.AddNewProduct(1, 1, "Niggaz", "Slaves", 50.0, 2000);
-//        st.DisplayProducts();
-        st.printProduct(1);
-        st.DecrementProductSize(1);
-        System.out.println();
-        st.printProduct(1);
-    }
+
 };
