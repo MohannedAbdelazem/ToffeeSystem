@@ -195,11 +195,54 @@ public class Stock {
         }
         RefreshProducts();
     }
+    public void printProduct(int productID){
+        if(!CheckProductByID(productID)){
+            System.out.println("Product of id "+ productID+ " does not exist");
+            return;
+        }
+        for(int i = 0;i<products.size();i++){
+            if(productID == products.get(i).getID()){
+                System.out.printf("ID                  Name                Price               Discount            Category            Size\n");
+                System.out.printf("%-20d%-20s%-20.2f%-20.2f%-20s%-20d\n", products.get(i).getID(), products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDiscount(), products.get(i).getCategory(), products.get(i).getSize());
+                return;
+            }
+        }
+
+    }
+    public void printProduct(String productName){
+        if(!CheckProductByName(productName)){
+            System.out.println("Product of name "+ productName+ " does not exist");
+            return;
+        }
+        for(int i = 0;i<products.size();i++){
+            if(productName.equalsIgnoreCase(products.get(i).getName())){
+                System.out.printf("ID                  Name                Price               Discount            Category            Size\n");
+                System.out.printf("%-20d%-20s%-20.2f%-20.2f%-20s%-20d\n", products.get(i).getID(), products.get(i).getName(), products.get(i).getPrice(), products.get(i).getDiscount(), products.get(i).getCategory(), products.get(i).getSize());
+                return;
+            }
+        }
+    }
+    public void DecrementProductSize(int productID){
+        if(!CheckProductByID(productID)){
+            System.out.println("Product of id "+ productID+ " does not exist");
+            return;
+        }
+        for(int i = 0;i<products.size();i++){
+            if(productID == products.get(i).getID()){
+                UpdateProduct(productID, "size", Integer.toString(products.get(i).getSize()-1));
+                return;
+            }
+        }
+    }
     public static void main(String[] args) {
 //        AddNewProduct(int id, double productPrice, String Name, String Categ, double Discount, int size){
         Stock st = new Stock();
 //        st.AddNewProduct(0, 500, "Mohanned", "Chocolates", 0.0, 1);
 //        st.AddNewProduct(1, 1, "Niggaz", "Slaves", 50.0, 2000);
-        st.DisplayProducts();
+//        st.DisplayProducts();
+        st.printProduct(1);
+        st.DecrementProductSize(1);
+        System.out.println();
+        st.printProduct(1);
     }
 };
