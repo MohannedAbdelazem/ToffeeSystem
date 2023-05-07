@@ -1,4 +1,4 @@
-public class Admin {
+public class Admin extends unregisteredUser{
     private int id;
     private String name;
     private char gender;
