@@ -113,18 +113,20 @@ public class VoucherDB {
         }
     }
 
-    public boolean checkVoucher(int id){
+    public int checkVoucher(int id){
+        int result = -1;
         refreshVouchers();
         for (int i = 0; i < vouchers.size() ; i++) {
             if(id == vouchers.get(i).getId()){
-                return true;
+                result = i;
+                break;
             }
         }
-        return false;
+        return  result;
     }
 
     public double getVoucher(int id){
-        refreshVouchers();
+
         for (int i = 0; i < vouchers.size() ; i++) {
             if(id == vouchers.get(i).getId()){
                 double discount = vouchers.get(i).getDiscountAmount();
@@ -132,6 +134,7 @@ public class VoucherDB {
                 return discount;
             }
         }
+        refreshVouchers();
         return 0;
     }
 

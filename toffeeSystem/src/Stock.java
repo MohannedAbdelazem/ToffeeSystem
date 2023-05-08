@@ -244,4 +244,14 @@ public class Stock {
             }
         }
     }
+    public product getProduct(String productName) {
+        product pp = null;
+        for (int i = 0; i < products.size(); i++) {
+            if (productName.equalsIgnoreCase(products.get(i).getName())) {
+                pp = products.get(i);
+                break;
+            }
+        }
+        return pp;
+    }
 };
