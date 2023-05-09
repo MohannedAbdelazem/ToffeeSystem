@@ -108,4 +108,23 @@ import java.util.HashMap;
 import java.util.Map;
 class ShoppingCart{
     private Map<String, Integer> products;
+    private Connection c;
+    ShoppingCart(){
+        products = new HashMap<String, Integer>();
+        try{
+            c = DriverManager.getConnection("jdbc:sqlite:./carts.db");
+
+
+        }
+        catch (Exception e){
+            File f = new File("./carts.db");
+            if(!(f.exists())){
+                System.out.println("Couldn't create dataBase");
+                System.out.println(e.getMessage());
+            }
+            else{
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 };

@@ -9,7 +9,7 @@ public class orderDB {
         orders.clear();
         try{
             // ORDER(orderid int, cartid int, customerID int, status String)
-            String SQL = "SELECT orderID, CartID, CustomerID, Status from ORDER";
+            String SQL = "SELECT orderID, CartID, CustomerID, Status from ORDERDB";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while(rs.next()){
@@ -24,6 +24,7 @@ public class orderDB {
     }
 
     orderDB(){
+        orders = new ArrayList<order>();
         try{
             c = DriverManager.getConnection("jdbc:sqlite:./OrderDB.db");
         }
@@ -39,13 +40,14 @@ public class orderDB {
         }
         try{
             Statement st = c.createStatement();
-            st.execute("CREATE TABLE IF NOT EXISTS ORDER(orderid int, cartid int, customerID int, status String)");
+            //          orderID, CartID, CustomerID, Status
+            st.execute("CREATE TABLE IF NOT EXISTS ORDERDB(orderID integer primary key, CartID integer, CustomerID integer, Status string)");
         }
         catch (Exception e){
             System.out.println("Couldn't create table");
             System.out.println(e.getMessage());
         }
-
+        RefreshOrders();
     }
 
     public void AddNewOrders(int orderID, int cartID, int customerID, String status){
@@ -63,7 +65,7 @@ public class orderDB {
             try {
                 orders.add(pd);
 //String SQL = "SELECT orderID, CartID, CustomerID, Status from ORDER";
-                String SQL = "INSERT INTO OrderDB (orderID, CartID, CustomerID, Status) VALUES(?, ?, ?, ?)";
+                String SQL = "INSERT INTO ORDERDB (orderID, CartID, CustomerID, Status) VALUES(?, ?, ?, ?)";
                 PreparedStatement stt = c.prepareStatement(SQL);
                 stt.setInt(1, orderID);
                 stt.setInt(2, cartID);
@@ -87,11 +89,10 @@ public class orderDB {
             System.out.println("Order data base  is empty");
             return;
         }
-        System.out.printf("OrderID                  CartID                CustomerID               Status\n");
+        System.out.printf("%-20s%-20s%-20s%-20s\n", "OrderID", "CartID", "CustomerID", "Status");
         for(int i = 0;i<orders.size();i++){
-            System.out.printf("%-20d%-20d%-20d%-20s%\n", orders.get(i).getOrderID(), orders.get(i).getCartID(), orders.get(i).getCustomerID(), orders.get(i).getStatus());
+            System.out.printf("%-20d%-20d%-20d%-20s\n", orders.get(i).getOrderID(), orders.get(i).getCartID(), orders.get(i).getCustomerID(), orders.get(i).getStatus());
         }
-
     }
 
     public boolean CheckOrderByID(int orderID){
@@ -113,7 +114,8 @@ public class orderDB {
             return;
         }
         try{
-            String SQL = "DELETE FROM order WHERE orderID = ?";
+            // orderID, CartID, CustomerID, Status
+            String SQL = "DELETE FROM ORDERDB WHERE orderID = ?";
             PreparedStatement st = c.prepareStatement(SQL);
             st.setInt(1, orderID);
             st.executeUpdate();
@@ -127,5 +129,7 @@ public class orderDB {
 
     public static void main(String[] args) {
         orderDB dd = new orderDB();
+
+        dd.DisplayProducts();
     }
 }
