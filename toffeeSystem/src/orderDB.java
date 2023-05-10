@@ -9,11 +9,11 @@ public class orderDB {
         orders.clear();
         try{
             // ORDER(orderid int, cartid int, customerID int, status String)
-            String SQL = "SELECT orderID, CartID, CustomerID, Status from ORDERDB";
+            String SQL = "SELECT orderID, CustomerID, Status from ORDERDB";
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while(rs.next()){
-                order p = new order(rs.getInt("orderID"), rs.getInt("CartID"), rs.getInt("CustomerID"), rs.getString("Status"));
+                order p = new order(rs.getInt("orderID"), rs.getInt("CustomerID"), rs.getString("Status"));
                 orders.add(p);
             }
 
@@ -41,7 +41,7 @@ public class orderDB {
         try{
             Statement st = c.createStatement();
             //          orderID, CartID, CustomerID, Status
-            st.execute("CREATE TABLE IF NOT EXISTS ORDERDB(orderID integer primary key, CartID integer, CustomerID integer, Status string)");
+            st.execute("CREATE TABLE IF NOT EXISTS ORDERDB(orderID integer primary key, CustomerID integer,CartID String, Status string)");
         }
         catch (Exception e){
             System.out.println("Couldn't create table");
@@ -50,8 +50,8 @@ public class orderDB {
         RefreshOrders();
     }
 
-    public void AddNewOrders(int orderID, int cartID, int customerID, String status){
-        order pd = new order(orderID, customerID, cartID, status);
+    public void AddNewOrders(int orderID,int customerID, String status){
+        order pd = new order(orderID, customerID, status);
         boolean flag = true;
         if(this.orders != null){
             for(int i = 0;i<orders.size();i++){
@@ -65,12 +65,11 @@ public class orderDB {
             try {
                 orders.add(pd);
 //String SQL = "SELECT orderID, CartID, CustomerID, Status from ORDER";
-                String SQL = "INSERT INTO ORDERDB (orderID, CartID, CustomerID, Status) VALUES(?, ?, ?, ?)";
+                String SQL = "INSERT INTO ORDERDB (orderID, CustomerID, Status) VALUES(?, ?, ?)";
                 PreparedStatement stt = c.prepareStatement(SQL);
                 stt.setInt(1, orderID);
-                stt.setInt(2, cartID);
-                stt.setInt(3, customerID );
-                stt.setString(4, status);
+                stt.setInt(2, customerID );
+                stt.setString(3, status);
                 stt.executeUpdate();
                 System.out.println("Order added successfully");
             }
@@ -86,12 +85,12 @@ public class orderDB {
     }
     public void DisplayProducts(){
         if(orders.size() == 0){
-            System.out.println("Order data base  is empty");
+            System.out.println("Order data base is empty");
             return;
         }
-        System.out.printf("%-20s%-20s%-20s%-20s\n", "OrderID", "CartID", "CustomerID", "Status");
+        System.out.printf("%-20s%-20s%-20s%-20s\n", "CustomerID", "OrderID", "CartID", "Status");
         for(int i = 0;i<orders.size();i++){
-            System.out.printf("%-20d%-20d%-20d%-20s\n", orders.get(i).getOrderID(), orders.get(i).getCartID(), orders.get(i).getCustomerID(), orders.get(i).getStatus());
+            System.out.printf("%-20d%-20d%-20s%-20s\n",orders.get(i).getCustomerID(), orders.get(i).getOrderID(), orders.get(i).getCartID(), orders.get(i).getStatus());
         }
     }
 
@@ -129,7 +128,7 @@ public class orderDB {
 
     public static void main(String[] args) {
         orderDB dd = new orderDB();
-
+//      dd.AddNewOrders(10,15,"pending");
         dd.DisplayProducts();
     }
 }

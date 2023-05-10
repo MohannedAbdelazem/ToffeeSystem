@@ -78,7 +78,7 @@ public class VoucherDB {
                 stt.setInt(1, id);
                 stt.setDouble(2, DiscountAmount);
                 stt.executeUpdate();
-                System.out.println("product added successfully");
+                System.out.println("Voucher added successfully");
             }
             catch (Exception e){
                 System.out.println("Didn't work lol");
@@ -86,7 +86,7 @@ public class VoucherDB {
             }
         }
         else {
-            System.out.println("Can't add a new product since you have a product with the same ID");
+            System.out.println("Can't add a new Voucher since you have a Voucher with the same ID");
         }
     }
 
@@ -114,27 +114,22 @@ public class VoucherDB {
     }
 
     public int checkVoucher(int id){
-        int result = -1;
         refreshVouchers();
         for (int i = 0; i < vouchers.size() ; i++) {
             if(id == vouchers.get(i).getId()){
-                result = i;
-                break;
+                return i;
             }
         }
-        return  result;
+        return -1;
     }
 
-    public double getVoucher(int id){
-
-        for (int i = 0; i < vouchers.size() ; i++) {
-            if(id == vouchers.get(i).getId()){
-                double discount = vouchers.get(i).getDiscountAmount();
-                removeVoucher(id);
-                return discount;
-            }
+    public double applyVoucher(int id){
+        int i = checkVoucher(id);
+        if( i >= 0) {
+            double discount = vouchers.get(i).getDiscountAmount();
+            removeVoucher(id);
+            return discount;
         }
-        refreshVouchers();
         return 0;
     }
 
@@ -150,5 +145,38 @@ public class VoucherDB {
         }
     }
 
+    public void UpdateVoucher(int IDcpy, String Attribute, String Value){
+        boolean flag = true;
+        if(this.vouchers != null){
+            for(int i = 0;i<vouchers.size();i++){
+                if(IDcpy == vouchers.get(i).getId()){
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        if(flag){
+            System.out.println("The ID you entered is not valid");
+            return;
+        }
+        String SQL = "UPDATE Voucher SET " + Attribute + " = ? WHERE ID = ?";
+        try{
+            PreparedStatement st = c.prepareStatement(SQL);
+            if(Attribute.equalsIgnoreCase("discount")){
+                st.setDouble(1, Double.parseDouble(Value));
+                st.setInt(2, IDcpy);
+                st.executeUpdate();
+                refreshVouchers();
+
+            }
+            else{
+                System.out.println("Invalid Entry: Only Entry Valid For Update is Discount");
+            }
+        }
+        catch (Exception e){
+            System.out.println("Update failed");
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

@@ -97,7 +97,8 @@ public class Stock {
 
     }
     public void DisplayProducts(){
-            if(products.size() == 0){
+        RefreshProducts();
+        if(products.size() == 0){
                 System.out.println("Stock is empty");
                 return;
             }
@@ -176,6 +177,17 @@ public class Stock {
         }
         return flag;
     }
+    public product getProduct(String name){
+        if(!CheckProductByName(name)){
+            System.out.println("Product of Name "+ name + " does not exist");
+        }
+        for(int i = 0;i<products.size();i++){
+            if(name.equalsIgnoreCase(products.get(i).getName())){
+                return products.get(i);
+            }
+        }
+        return null;
+    }
     public void deleteProduct(int productID){
         if(!CheckProductByID(productID)){
             System.out.println("Invalid product ID");
@@ -220,6 +232,7 @@ public class Stock {
             }
         }
     }
+
     public void DecrementProductSize(int productID, int Ammount){
         if(!CheckProductByID(productID)){
             System.out.println("Product of id "+ productID+ " does not exist");
@@ -244,14 +257,55 @@ public class Stock {
             }
         }
     }
-    public product getProduct(String productName) {
-        product pp = null;
-        for (int i = 0; i < products.size(); i++) {
-            if (productName.equalsIgnoreCase(products.get(i).getName())) {
-                pp = products.get(i);
-                break;
+    public int getMaxPriceItem(){
+        double max = products.get(0).getPrice();
+        int i;
+        for( i = 1; i < products.size(); i++) {
+           if(products.get(i).getPrice()>max){
+               max = products.get(i).getPrice();
+           }
+        }
+        return i-1;
+    }
+    public int getMinPriceItem(){
+        double min = products.get(0).getPrice();
+        int i;
+        for( i = 1; i < products.size(); i++) {
+            if(products.get(i).getPrice()<min){
+                min = products.get(i).getPrice();
             }
         }
-        return pp;
+        return i-1;
     }
-};
+    public int getMaxSizeItem(){
+        double max = products.get(0).getSize();
+        int i;
+        for( i = 1; i < products.size(); i++) {
+            if(products.get(i).getSize()>max){
+                max = products.get(i).getSize();
+            }
+        }
+        return i-1;
+    }
+    public int getMinSizeItem(){
+        double min = products.get(0).getSize();
+        int i;
+        for( i = 1; i < products.size(); i++) {
+            if(products.get(i).getSize()<min){
+                min = products.get(i).getSize();
+            }
+        }
+        return i-1;
+    }
+    public void stockStatistics(){
+        int index1 = getMaxPriceItem();
+        int index2 = getMinPriceItem();
+        int index3 = getMaxSizeItem();
+        int index4 = getMinSizeItem();
+        System.out.println("Number Of Products : "+ products.size());
+        System.out.println("The Most Expensive Product: "+products.get(index1).getName()+ "  ------  With a Price Of: "+products.get(index1).getPrice());
+        System.out.println("The Least Expensive Product: "+products.get(index2).getName()+"  ------  With a Price Of: "+products.get(index2).getPrice());
+        System.out.println("The Most Product In Stock: "+products.get(index3).getName()+  "  ------  With a Quantity Of: "+products.get(index3).getSize());
+        System.out.println("The Least Product In Stock: "+products.get(index4).getName()+ "  ------  With a Quantity Of: "+products.get(index4).getSize());
+    }
+}

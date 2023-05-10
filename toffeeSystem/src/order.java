@@ -1,8 +1,9 @@
 class order{
-    private int orderID, CustomerID, CartID;
+    private int orderID, CustomerID;
+    String CartID;
     private String status;
-    order(int orderID, int customerID, int cartID, String status){
-        this.CartID = cartID;
+    order(int orderID,int customerID, String status){
+        this.CartID = customerID+"_"+orderID;
         this.orderID = orderID;
         this.CustomerID = customerID;
         this.status = status;
@@ -24,11 +25,11 @@ class order{
         CustomerID = customerID;
     }
 
-    public int getCartID() {
+    public String getCartID() {
         return CartID;
     }
 
-    public void setCartID(int cartID) {
+    public void setCartID(String cartID) {
         CartID = cartID;
     }
 

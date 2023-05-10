@@ -37,7 +37,7 @@ public class product{
     }
     void setDiscount(double discount){
         this.Discount = discount;
-        setPrice(price);
+        setPrice(getPrice()/(1-getDiscount()/100));
     }
     double getDiscount(){
         return Discount;
