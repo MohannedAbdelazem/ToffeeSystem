@@ -6,6 +6,9 @@ import javax.mail.internet.*;
 import java.util.*;
 
 public class Toffee {
+    //Attributes
+    CustomerDB customers;
+    AdminDB admins;
     public static String generateOTP(){
         int otpl = 6;
         String numbers = "0123456789";
@@ -20,7 +23,7 @@ public class Toffee {
     public String sendOTP(String mail)throws Exception{
         String OPT = generateOTP();
         String from = "niceuser619@gmail.com";
-        String password = "ourteampassword";
+        String password = "fdyhslqiwzdbjjqf";
         String host = "smtp.gmail.com";
         Properties props = new Properties();
 
@@ -53,6 +56,8 @@ public class Toffee {
 private Scanner scan = new Scanner(System.in);
 
     public Toffee() {
+        customers = new CustomerDB();
+        admins = new AdminDB();
 //        TEMPORARY USED FOR TESTING
 //        admins.addNewAdmin(1,"abdo","123",32,"Male","32 oggabogga street","onga@email.bonga");
 //        adminInterface(admins.getAdmin("abdo"));
@@ -93,9 +98,11 @@ private Scanner scan = new Scanner(System.in);
                     break;
                 }
                 case 3: {
+                    register();
                     break;
                 }
                 case 4: {
+                    login();
                     break;
                 }
                 case 5:{
@@ -111,24 +118,161 @@ private Scanner scan = new Scanner(System.in);
             }
         }
     }
+    void register(){
+        System.out.println("Choose which account do you want to create:");
+        System.out.println("1.Customer");
+        System.out.println("2.Admin");
+        int choice = Integer.parseInt(scan.nextLine());
+        switch (choice){
+            case 1:{
+                System.out.println("Please Enter Customer Data");
+                System.out.print("ID: ");
+                int id = Integer.parseInt(scan.nextLine());
+                System.out.print("Name: ");
+                String name = scan.nextLine();
+                System.out.print("Password: ");
+                String pass = scan.nextLine();
+                System.out.print("Age: ");
+                int age = Integer.parseInt(scan.nextLine());
+                System.out.print("Gender: ");
+                String gen = scan.nextLine();
+                System.out.print("Address: ");
+                String Address = scan.nextLine();
+                System.out.print("Email: ");
+                String Mail = scan.nextLine();
 
+                try{
+                    String OTP = sendOTP(Mail);
+                    System.out.printf("Welcome %s, an OTP message was sent to your account\n", name);
+                    System.out.printf("Please write the OTP number: ");
+                    String otp = scan.nextLine();
+                    if(otp.equalsIgnoreCase(OTP)){
+                        System.out.println("Email was confirmed Successfully");
+                        customers.addNewCustomer(id, name, age, gen, Address, Mail, 0, pass);
+                    }
+                    else{
+                        System.out.println("Wrong OTP");
+                        TimeUnit.SECONDS.sleep(2);
+                    }
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+                break;
+            }
+            case 2:{
+
+
+                System.out.println("To create New Admin please Enter owner password:");
+                String Adminpassword = scan.nextLine();
+                if(Adminpassword.equalsIgnoreCase("12345")){
+                    System.out.println("The password is correct");
+                    System.out.println("Please Enter Admin Data");
+                    System.out.print("ID: ");
+                    int id = Integer.parseInt(scan.nextLine());
+                    System.out.print("Name: ");
+                    String name = scan.nextLine();
+                    System.out.print("Password: ");
+                    String pass = scan.nextLine();
+                    System.out.print("Age: ");
+                    int age = Integer.parseInt(scan.nextLine());
+                    System.out.print("Gender: ");
+                    String gen = scan.nextLine();
+                    System.out.print("Address: ");
+                    String Address = scan.nextLine();
+                    System.out.print("Email: ");
+                    String Mail = scan.nextLine();
+
+                    try{
+                        String OTP = sendOTP(Mail);
+                        System.out.printf("Welcome %s, an OTP message was sent to your account\n", name);
+                        System.out.printf("Please write the OTP number: ");
+                        String otp = scan.nextLine();
+                        if(otp.equalsIgnoreCase(OTP)){
+                            System.out.println("Email was confirmed Successfully");
+                            admins.addNewAdmin(id, name, pass, age, gen, Address, Mail);
+                        }
+                        else{
+                            System.out.println("Wrong OTP");
+                            TimeUnit.SECONDS.sleep(2);
+                        }
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+                else{
+                    try {
+                        System.out.println("Wrong Owner Password");
+                        TimeUnit.SECONDS.sleep(2);
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
+                }
+                break;
+            }
+        }
+
+    }
     void login (){
-        AdminDB admins = new AdminDB();
+
         System.out.println("------Welcome To Toffee------");
         System.out.println("-----------Log-IN-----------\n\n\n");
-        System.out.print("Username: ");
-        String name = scan.nextLine();
-
-        System.out.print("password: ");
-        String pass = scan.nextLine();
-
-        if(admins.getAdmin(name).getPassword() == pass ){
-            adminInterface(admins.getAdmin(name));
-
-        //need to add another if to check if the credentials is for a customer
+        System.out.println("Choose which Interface do you want to login into as:");
+        System.out.println("1.Customer");
+        System.out.println("2.Admin");
+        System.out.print("-->");
+        int choice = Integer.parseInt(scan.nextLine());
+        if(choice == 1){
+            System.out.println("Please Enter Customer username and password");
+            System.out.print("UserName: ");
+            String uName = scan.nextLine();
+            if(customers.getCustomerByName(uName) == null){
+                System.out.println("No customers with such name exists");
+            }
+            else{
+                System.out.print("Password: ");
+                String pass = scan.nextLine();
+                if(customers.getCustomerByName(uName).getPassword().equals(pass)){
+                    customerInterface(customers.getCustomerByName(uName));
+                }
+                else{
+                    System.out.println("Wrong password");
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
         }
         else{
-            System.out.println("Wrong Username Or Password");
+            System.out.println("Please Enter Admin username and password");
+            System.out.print("UserName: ");
+            String uName = scan.nextLine();
+            if(admins.getAdmin(uName) == null){
+                System.out.println("No Admins with such name exists");
+            }
+            else{
+                System.out.print("Password: ");
+                String pass = scan.nextLine();
+                if(admins.getAdmin(uName).getPassword().equals(pass)){
+                    adminInterface(admins.getAdmin(uName));
+                }
+                else{
+                    System.out.println("Wrong password");
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
         }
     }
 
@@ -155,16 +299,13 @@ private Scanner scan = new Scanner(System.in);
             switch (choice) {
                 case 1: {
                     System.out.println("------View Products------\n");
-
                     admin.viewProducts();
                     break;
                 }
                 case 2: {
                     System.out.println("------Search For Product------\n");
-
                     System.out.print("\nEnter Product Name: ");
                     String name = scan.nextLine();
-
                     admin.searchItem(name);
                     break;
                 }
@@ -208,31 +349,24 @@ private Scanner scan = new Scanner(System.in);
                 }
                 case 5: {
                     System.out.println("------Remove Product------\n");
-
                     System.out.print("Enter Product ID: ");
                     int id = Integer.parseInt(scan.nextLine());
-
                     admin.removeProduct(id);
                     break;
                 }
                 case 6: {
                     System.out.println("------Edit Voucher------\n");
-
                     System.out.print("Enter Voucher ID: ");
                     int id = Integer.parseInt(scan.nextLine());
-
                     System.out.print("\nEnter Attribute to change (Discount)");
                     String attribute = scan.nextLine();
-
                     System.out.print("\nEnter The New Value: ");
                     String value = scan.nextLine();
-
                     admin.editVoucher(id, attribute, value);
                     break;
                 }
                 case 7: {
                     System.out.println("------Add Voucher------\n");
-
                     System.out.print("Enter Voucher ID: ");
                     int id = Integer.parseInt(scan.nextLine());
 
@@ -260,12 +394,13 @@ private Scanner scan = new Scanner(System.in);
                 case 10: {
                     System.out.println("------View Statistics------\n");
 
-                    System.out.println("1.Customer Statistics");
+                    System.out.println("1.Display Customers");
                     System.out.println("2.Stock Statistics");
+                    System.out.print("-->");
                     int n = Integer.parseInt(scan.nextLine());
                     switch (n) {
                         case 1:
-                            //waiting for customerDB class
+                            customers.DisplayCustomers();
                             break;
                         case 2:
                             admin.viewStockStatistics();
@@ -278,7 +413,6 @@ private Scanner scan = new Scanner(System.in);
 
                     System.out.print("Enter The Amount Gained From The Scheme: ");
                     int amount = Integer.parseInt(scan.nextLine());
-
                     admin.setLoyaltyPointSchemeAmount(amount);
                     break;
                 }
@@ -287,6 +421,7 @@ private Scanner scan = new Scanner(System.in);
                 }
                 case 13: {
                     System.exit(0);
+                    break;
                 }
                 case 69:{
                     System.out.println("⠀⣠⣴⣶⣿⣿⣷⣶⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n" +
@@ -305,22 +440,28 @@ private Scanner scan = new Scanner(System.in);
                             "⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣦⣤⣤⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀\n" +
                             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⣿⣿⣿⣿⣿⣿⠿⠋⠉⠛⠋⠉⠉⠁⠀⠀⠀⠀\n" +
                             "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠁");
+                    break;
                 }
                 default:{
                     System.out.println("Error: Invalid Input Please Try Again");
                     break;
                 }
             }
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         }
     }
 
 
-    public void customerInterface(){
-
+    public void customerInterface(Customer customer){
     }
 
     public static void main(String[] args) {
         Toffee toffee = new Toffee();
-//        System.out.println("leeeeeeeeeeeeeeeeh");
+
     }
 }
