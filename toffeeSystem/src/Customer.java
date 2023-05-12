@@ -2,11 +2,12 @@ public class Customer extends unregisteredUser {
     private int CustomerID;
     private String name;
     private int age;
-    private char Gender;
+    private String Gender;
     private String address;
     private String email;
     private int loyalityPoints;
-    Customer(int ID, String Name, int Age, char G, String Address, String Email, int loyalityPoints){
+    private String password;
+    Customer(int ID, String Name, int Age, String G, String Address, String Email, int loyalityPoints, String password){
         CustomerID = ID;
         this.name = Name;
         this.age = Age;
@@ -14,6 +15,7 @@ public class Customer extends unregisteredUser {
         this.address = Address;
         this.email = Email;
         this.loyalityPoints = loyalityPoints;
+        this.password = password;
     }
     int getID(){
         return this.CustomerID;
@@ -30,10 +32,10 @@ public class Customer extends unregisteredUser {
     int getAge(){
         return this.age;
     }
-    void SetGender(char G){
+    void SetGender(String G){
         this.Gender = G;
     }
-    char getGender(){
+    String getGender(){
         return this.Gender;
     }
     String getAddress(){
@@ -53,6 +55,12 @@ public class Customer extends unregisteredUser {
     }
     int getloyalityPoints(){
         return this.loyalityPoints;
+    }
+    void setPassword(String password){
+        this.password = password;
+    }
+    String getPassword(){
+        return this.password;
     }
 
 }

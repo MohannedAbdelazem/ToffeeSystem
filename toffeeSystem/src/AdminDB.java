@@ -159,5 +159,6 @@ public class AdminDB {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+        refreshAdmins();
     }
 }

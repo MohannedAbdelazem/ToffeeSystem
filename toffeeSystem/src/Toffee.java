@@ -1,20 +1,73 @@
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit;
 public class Toffee {
 
-private AdminDB admins = new AdminDB();
 
-private unregisteredUser guest ;
+
 private Scanner scan = new Scanner(System.in);
 
-    public Toffee(){
-
+    public Toffee() {
 //        TEMPORARY USED FOR TESTING
 //        admins.addNewAdmin(1,"abdo","123",32,"Male","32 oggabogga street","onga@email.bonga");
 //        adminInterface(admins.getAdmin("abdo"));
+        boolean loop = true;
+        System.out.println("####################################################################################");
+        System.out.println("####################################################################################");
+        System.out.println("######  ########      ######       ########   ########   ########   ########  ######");
+        System.out.println("######     ##       ##      ##     ##         ##         ##         ##        ######");
+        System.out.println("######     ##       #        #     ########   ########   ########   ########  ######");
+        System.out.println("######     ##       ##     ##      ##         ##         ##         ##        ######");
+        System.out.println("######     ##        ######        ##         ##         ########   ########  ######");
+        System.out.println("####################################################################################");
+        System.out.println("####################################################################################");
+        while (loop) {
+
+
+            unregisteredUser guest = new unregisteredUser();
+            label:System.out.println("\n");
+            System.out.println("Welcome to our Toffee application");
+            System.out.println("\"Choose One Of The Following Options:");
+            System.out.println("1.View products");
+            System.out.println("2.Search for an item");
+            System.out.println("3.Register");
+            System.out.println("4.Login");
+            System.out.println("5.Exit");
+            System.out.print("-->");
+            int choice = Integer.parseInt(scan.nextLine());
+            switch (choice) {
+                case 1: {
+                    guest.viewProducts();
+                    break;
+                }
+
+                case 2: {
+                    System.out.print("Please Enter the name of the item you want to search for: ");
+                    String p = scan.nextLine();
+                    guest.searchItem(p);
+                    break;
+                }
+                case 3: {
+                    break;
+                }
+                case 4: {
+                    break;
+                }
+                case 5:{
+                    System.out.println("Goodbye, come again!");
+                    loop = false;
+                    break;
+                }
+                default:{
+                    System.out.println("Invalid option please enter a valid option");
+                    break;
+                }
+
+            }
+        }
     }
 
     void login (){
+        AdminDB admins = new AdminDB();
         System.out.println("------Welcome To Toffee------");
         System.out.println("-----------Log-IN-----------\n\n\n");
         System.out.print("Username: ");
