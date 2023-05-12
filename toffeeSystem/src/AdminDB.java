@@ -1,7 +1,7 @@
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-
+//trr
 public class AdminDB {
     private ArrayList<Admin> admins;
     private Connection c;
