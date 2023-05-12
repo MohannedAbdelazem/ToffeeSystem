@@ -1,7 +1,53 @@
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-public class Toffee {
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.*;
 
+public class Toffee {
+    public static String generateOTP(){
+        int otpl = 6;
+        String numbers = "0123456789";
+        Random random = new Random();
+        char[] otp = new char[otpl];
+        for(int i = 0;i<otpl;i++){
+            otp[i] = numbers.charAt(random.nextInt(numbers.length()));
+
+        }
+        return new String(otp);
+    }
+    public String(String mail)throws Exception{
+        String OPT = generateOTP();
+        String from = "niceuser619@gmail.com";
+        String password = "ourteampassword";
+        String host = "smtp.gmail.com";
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator(){
+            protected  PasswordAuthentication getPasswordAuthentication(){
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+        try{
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail));
+            message.setText("Your OTP is: "+ OPT);
+            Transport.send(message);
+            System.out.println("Check you email");
+        }
+        catch (Exception e){
+            throw new RuntimeException((e));
+        }
+        return OPT;
+    }
 
 
 private Scanner scan = new Scanner(System.in);
@@ -99,11 +145,10 @@ private Scanner scan = new Scanner(System.in);
             System.out.println("6.Edit Voucher");
             System.out.println("7.Add Voucher");
             System.out.println("8.Remove Voucher");
-            System.out.println("9.View Vouchers");
-            System.out.println("10.View Statistics");
-            System.out.println("11.Set Loyalty Point Scheme");
-            System.out.println("12.Log Out");
-            System.out.println("13.Exit");
+            System.out.println("9.View Statistics");
+            System.out.println("10.Set Loyalty Point Scheme");
+            System.out.println("11.Log Out");
+            System.out.println("12.Exit");
 
             int choice = Integer.parseInt(scan.nextLine());
             switch (choice) {
@@ -241,9 +286,6 @@ private Scanner scan = new Scanner(System.in);
                 }
                 case 13: {
                     System.exit(0);
-                } default:{
-                    System.out.println("Error: Invalid Input Please Try Again");
-                    break;
                 }
             }
         }
