@@ -99,10 +99,11 @@ private Scanner scan = new Scanner(System.in);
             System.out.println("6.Edit Voucher");
             System.out.println("7.Add Voucher");
             System.out.println("8.Remove Voucher");
-            System.out.println("9.View Statistics");
-            System.out.println("10.Set Loyalty Point Scheme");
-            System.out.println("11.Log Out");
-            System.out.println("12.Exit");
+            System.out.println("9.View Vouchers");
+            System.out.println("10.View Statistics");
+            System.out.println("11.Set Loyalty Point Scheme");
+            System.out.println("12.Log Out");
+            System.out.println("13.Exit");
 
             int choice = Integer.parseInt(scan.nextLine());
             switch (choice) {
@@ -240,6 +241,9 @@ private Scanner scan = new Scanner(System.in);
                 }
                 case 13: {
                     System.exit(0);
+                } default:{
+                    System.out.println("Error: Invalid Input Please Try Again");
+                    break;
                 }
             }
         }
