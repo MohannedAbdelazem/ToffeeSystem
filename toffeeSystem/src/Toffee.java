@@ -17,7 +17,7 @@ public class Toffee {
         }
         return new String(otp);
     }
-    public String(String mail)throws Exception{
+    public String sendOTP(String mail)throws Exception{
         String OPT = generateOTP();
         String from = "niceuser619@gmail.com";
         String password = "ourteampassword";
@@ -321,6 +321,6 @@ private Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
         Toffee toffee = new Toffee();
-
+//        System.out.println("leeeeeeeeeeeeeeeeh");
     }
 }
