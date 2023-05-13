@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 public class ShoppingCart {
-    private ArrayList<product> cart;
+    public ArrayList<product> cart;
     private Stock st;
 
     ShoppingCart(){

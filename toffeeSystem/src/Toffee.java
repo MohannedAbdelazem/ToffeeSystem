@@ -6,6 +6,8 @@ import javax.mail.internet.*;
 import java.util.*;
 
 public class Toffee {
+    orderDB orders;
+    cartDB carts;
     //Attributes
     CustomerDB customers;
     AdminDB admins;
@@ -56,6 +58,8 @@ public class Toffee {
 private Scanner scan = new Scanner(System.in);
 
     public Toffee() {
+        orders = new orderDB();
+        carts = new cartDB();
         customers = new CustomerDB();
         admins = new AdminDB();
 //        TEMPORARY USED FOR TESTING
@@ -458,6 +462,17 @@ private Scanner scan = new Scanner(System.in);
 
 
     public void customerInterface(Customer customer){
+        ShoppingCart Cart = new ShoppingCart();
+
+        System.out.println("-----------Customer Interface-----------\n\n");
+        System.out.println("Please Choose one of our available options:");
+        System.out.println("1.View Items");
+        System.out.println("2.Search for a product");
+        System.out.println("3.Add to cart");
+        System.out.println("4.Remove from cart");
+        System.out.println("5.View cart");
+        System.out.println("Reorder");
+        System.out.println("Cancel order");
     }
 
     public static void main(String[] args) {
