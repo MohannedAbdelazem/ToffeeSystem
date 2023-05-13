@@ -3,7 +3,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class orderDB {
-    private ArrayList<order> orders;
+    public ArrayList<order> orders;
     private Connection c;
     void RefreshOrders(){
         orders.clear();

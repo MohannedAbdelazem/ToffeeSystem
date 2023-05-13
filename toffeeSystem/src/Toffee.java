@@ -11,6 +11,7 @@ public class Toffee {
     //Attributes
     CustomerDB customers;
     AdminDB admins;
+    VoucherDB vouchers;
     public static String generateOTP(){
         int otpl = 6;
         String numbers = "0123456789";
@@ -58,6 +59,7 @@ public class Toffee {
 private Scanner scan = new Scanner(System.in);
 
     public Toffee() {
+        vouchers = new VoucherDB();
         orders = new orderDB();
         carts = new cartDB();
         customers = new CustomerDB();
@@ -546,7 +548,56 @@ private Scanner scan = new Scanner(System.in);
                     break;
                 }
                 case 10:{
-                    checkout();
+                    System.out.println("Do you want to add a voucher");
+                    System.out.print("1.Yes");
+                    System.out.print("2.No");
+                    int ch = Integer.parseInt(scan.nextLine());
+                    double TP = 0.0;
+                    switch (ch){
+                        case 1:{
+                            System.out.print("Enter the voucher ID: ");
+                            int VID = Integer.parseInt(scan.nextLine());
+                            TP = Cart.getTotalPrice();
+                            double DISCOUNT = vouchers.applyVoucher(VID);
+                            if(DISCOUNT == 0.0){
+                                System.out.println("Incorrect voucher lol");
+                            }
+                            else{
+                                TP = TP - TP*(DISCOUNT/100);
+                            }
+                            break;
+                        }
+                        case 2:{
+                            System.out.println("ok");
+                            break;
+                        }
+                    }
+                    System.out.printf("Your loyalty pts is equal %f\n", customer.getloyalityPoints());
+                    if(customer.getloyalityPoints()>5000){
+                        System.out.println("Do you want to use your loyalty points to get 50% discount (Note that your loyalty points will decrease by 5000 if you agree)");
+                        System.out.println("1.Yes (Any other number for no)");
+                        int CHoice = Integer.parseInt(scan.nextLine());
+                        if(CHoice == 1){
+                            TP = TP*0.5;
+                            customer.setLoyalityPoints(customer.getloyalityPoints()-5000);
+
+                        }
+                    }
+                    order newOrder = new order(orders.orders.size(), customer.getID(), "Pending");
+                    orders.AddNewOrders(newOrder.getOrderID(), newOrder.getCustomerID(), newOrder.getStatus());
+                    carts.AddNewCart(Cart, customer.getID(), newOrder.getOrderID());
+                    System.out.println("Order has been made");
+                    int ItemSize = 0;
+                    for (int i = 0;i<Cart.cart.size();i++){
+                        System.out.printf("%s\n", Cart.cart.get(i).getName());
+                        ItemSize += Cart.cart.get(i).getSize();
+                    }
+                    System.out.printf("Total price = %d\n", TP);
+                    int LPs = 10*ItemSize + customer.getloyalityPoints();
+                    customer.setLoyalityPoints(LPs);
+                    System.out.printf("New loyalty points = %d\n", LPs);
+                    customers.DeleteCustomer(customer.getID());
+                    customers.addNewCustomer(customer.getID(), customer.getName(), customer.getAge(), customer.getGender(), customer.getAddress(), customer.getEmail(), customer.getloyalityPoints(), customer.getPassword());
                     break;
                 }
                 case 11:{
