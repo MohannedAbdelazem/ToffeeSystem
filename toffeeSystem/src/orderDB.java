@@ -125,10 +125,42 @@ public class orderDB {
         }
         RefreshOrders();
     }
-
-    public static void main(String[] args) {
-        orderDB dd = new orderDB();
-//      dd.AddNewOrders(10,15,"pending");
-        dd.DisplayProducts();
+    public order GetOrder(int orderID){
+//        order(int orderID,int customerID, String status){
+        order ord;
+        if(!CheckOrderByID(orderID)){
+            System.out.println("Invalid order ID");
+            return null;
+        }
+        try{
+            // orderID, CartID, CustomerID, Status
+            String SQL = "SELECT * FROM ORDERDB WHERE orderID = ?";
+            PreparedStatement st = c.prepareStatement(SQL);
+            st.setInt(1, orderID);
+            ResultSet rs = st.executeQuery(SQL);
+            int CustID = rs.getInt("CustomerID");
+            int cartID = rs.getInt("CartID");
+            String status = rs.getString("Status");
+            ord = new order(orderID, CustID, status);
+            return ord;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
+
+    void CancelOrder(int orderID){
+        String SQL = "UPDATE ORDERDB SET STATUS = CANCELED WHERE ID = ?";
+        try{
+            PreparedStatement st = c.prepareStatement(SQL);
+            st.executeUpdate();
+            RefreshOrders();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
 }

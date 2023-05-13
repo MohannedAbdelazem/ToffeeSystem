@@ -25,7 +25,7 @@ public class cartDB {
             try {
                 for(int i = 0;i<ct.cart.size();i++){
                     String Tablee = Integer.toString(custID)+"_"+Integer.toString(cartID);
-                    String SQL = "INSERT INTO " + Tablee + "(ID, name, price, discount, category, size) VALUES(?, ?, ?, ?, ?, ?)";
+                    String SQL = "INSERT INTO " + Tablee + "(ID, name, price, discount, category, amount) VALUES(?, ?, ?, ?, ?, ?)";
                     PreparedStatement stt = c.prepareStatement(SQL);
                     stt.setInt(1, ct.cart.get(i).getID());
                     stt.setString(2, ct.cart.get(i).getName());
@@ -45,19 +45,34 @@ public class cartDB {
 
     }
     public void DisplayCustomerCart(int CustomerID, int cartID){
-        System.out.printf("Name            Size\n");
+        System.out.printf("Name            amount\n");
         String V = Integer.toString(CustomerID)+"_"+Integer.toString(cartID);
-        String SQL = "SELECT name, size from "+V;
+        String SQL = "SELECT name, amount from "+V;
         try{
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(SQL);
             while(rs.next()){
-                System.out.printf("%s\n", rs.getString("name"), rs.getInt("size"));
+                System.out.printf("%-20s%-20d\n", rs.getString("name"), rs.getInt("amount"));
             }
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
     }
-
+    ShoppingCart reOrder(int customerID, int OrderID){
+        ShoppingCart sc = new ShoppingCart();
+        String V = Integer.toString(customerID)+"_"+Integer.toString(OrderID);
+        String SQL = "SELECT name, amount from "+V;
+        try {
+            Statement st = c.createStatement();
+            ResultSet rs = st.executeQuery(SQL);
+            while (rs.next()) {
+                sc.AddToCart(rs.getString("name"), rs.getInt("amount"));
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return sc;
+    }
 }

@@ -463,16 +463,102 @@ private Scanner scan = new Scanner(System.in);
 
     public void customerInterface(Customer customer){
         ShoppingCart Cart = new ShoppingCart();
+        boolean loop = true;
+        while (loop){
+            System.out.println("-----------Customer Interface-----------\n\n");
+            System.out.println("Please Choose one of our available options:");
+            System.out.println("1.View Stock");
+            System.out.println("2.Search for a product");
+            System.out.println("3.Add to cart");
+            System.out.println("4.Remove from cart");
+            System.out.println("5.View cart items");
+            System.out.println("6.Reorder");
+            System.out.println("7.Cancel order");
+            System.out.println("8.View orders");
+            System.out.println("9.View order products");
+            System.out.println("10.Checkout");
+            System.out.println("11.Logout");
+            System.out.println("12.Exit");
+            System.out.print("--->");
+            int choice = Integer.parseInt(scan.nextLine());
+            switch (choice){
+                case 1:{
+                    customer.viewProducts();
+                    break;
+                }
+                case 2:{
+                    System.out.println("Please Enter the name of the product you are looking for");
+                    String Pname = scan.nextLine();
+                    customer.searchItem(Pname);
+                    break;
+                }
+                case 3:{
+//                public void AddToCart(String productName, int amount){
+                    System.out.println("Please Enter the name and amount of the product you are searching for");
+                    System.out.print("Enter product Name: ");
+                    String Pname = scan.nextLine();
+                    System.out.print("Enter product amount: ");
+                    int amount = Integer.parseInt(scan.nextLine());
+                    Cart.AddToCart(Pname, amount);
+                    break;
+                }
+                case 4:{
+//                    (String productName, int amount){
+                    System.out.println("Please enter the name and amount of the product");
+                    System.out.print("Enter product name:");
+                    String Pname = scan.nextLine();
+                    System.out.print("Enter product amount: ");
+                    int amount = Integer.parseInt(scan.nextLine());
+                    Cart.RemoveFromCart(Pname, amount);
+                    break;
+                }
+                case 5:{
+                    Cart.viewCart();
+                    break;
+                }
+                case 6:{
+                    //ReOrder
+                    System.out.println("Please Choose order ID");
+                    int Order = Integer.parseInt(scan.nextLine());
+                    if(orders.CheckOrderByID(Order)){
+                        order Ord = orders.GetOrder(Order);
+                        Cart = carts.reOrder(customer.getID(), Ord.getOrderID());
+                    }
+                    break;
+                }
+                case 7:{
+                    System.out.println("Enter ID of the order you want to cancel");
+                    System.out.print("OrderID: ");
+                    int orderID = Integer.parseInt(scan.nextLine());
+                    orders.CancelOrder(orderID);
+                    break;
+                }
+                case 8:{
+//                    order(int orderID,int customerID, String status){
+                    orders.DisplayProducts();
+                    break;
+                }
+                case 9:{
+                    System.out.println("Please specify the order you want to see: ");
+                    System.out.println("Order ID: ");
+                    int OrderID = Integer.parseInt(scan.nextLine());
+                    carts.DisplayCustomerCart(customer.getID(), OrderID);
+                    break;
+                }
+                case 10:{
+                    checkout();
+                    break;
+                }
+                case 11:{
+                    return;
+                }
+                case  12:{
+                    System.exit(0);
+                }
+            }
 
-        System.out.println("-----------Customer Interface-----------\n\n");
-        System.out.println("Please Choose one of our available options:");
-        System.out.println("1.View Items");
-        System.out.println("2.Search for a product");
-        System.out.println("3.Add to cart");
-        System.out.println("4.Remove from cart");
-        System.out.println("5.View cart");
-        System.out.println("Reorder");
-        System.out.println("Cancel order");
+        }
+
     }
 
     public static void main(String[] args) {
