@@ -125,30 +125,35 @@ public class orderDB {
         }
         RefreshOrders();
     }
-    public order GetOrder(int orderID){
-//        order(int orderID,int customerID, String status){
-        order ord;
-        if(!CheckOrderByID(orderID)){
-            System.out.println("Invalid order ID");
-            return null;
-        }
-        try{
-            // orderID, CartID, CustomerID, Status
-            String SQL = "SELECT * FROM ORDERDB WHERE orderID = ?";
-            PreparedStatement st = c.prepareStatement(SQL);
-            st.setInt(1, orderID);
-            ResultSet rs = st.executeQuery(SQL);
+
+public order GetOrder(int orderID){
+    order ord;
+    if(!CheckOrderByID(orderID)){
+        System.out.println("Invalid order ID");
+        return null;
+    }
+    try{
+        // orderID, CartID, CustomerID, Status
+        String SQL = "SELECT CustomerID, Status FROM ORDERDB WHERE orderID = ?";
+        PreparedStatement st = c.prepareStatement(SQL);
+        st.setInt(1, orderID);
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
             int CustID = rs.getInt("CustomerID");
-            int cartID = rs.getInt("CartID");
+//            int cartID = rs.getInt("CartID");
             String status = rs.getString("Status");
             ord = new order(orderID, CustID, status);
             return ord;
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
+        } else {
+            System.out.println("No order found with ID: " + orderID);
             return null;
         }
     }
+    catch (Exception e){
+        System.out.println(e.getMessage());
+        return null;
+    }
+}
 
     void CancelOrder(int orderID){
         String SQL = "UPDATE ORDERDB SET STATUS = CANCELED WHERE ID = ?";
@@ -162,5 +167,4 @@ public class orderDB {
         }
 
     }
-
 }

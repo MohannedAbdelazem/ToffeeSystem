@@ -103,7 +103,7 @@ public class VoucherDB {
                         PreparedStatement stt = c.prepareStatement(SQL);
                         stt.setInt(1,id);
                         stt.executeUpdate();
-                        System.out.println("Voucher Deleted Successfully");
+//                        System.out.println("Voucher Deleted Successfully");
                     }catch(Exception e) {
                         System.out.println("It Failed For Some Reason IDK ");
                         System.out.println(e.getMessage());

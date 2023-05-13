@@ -22,9 +22,18 @@ public class cartDB {
 
     }
     public void AddNewCart(ShoppingCart ct, int custID, int cartID){
+        String Tablee = "C" +Integer.toString(custID)+"_"+Integer.toString(cartID);
+        try{
+            Statement st = c.createStatement();
+            st.execute("CREATE TABLE IF NOT EXISTS "+Tablee+"(ID integer primary key, name string, price Double, discount Double, category String, amount String )");
+
+        }
+        catch (Exception e){
+            System.out.println("Couldn't create table");
+            System.out.println(e.getMessage());
+        }
             try {
                 for(int i = 0;i<ct.cart.size();i++){
-                    String Tablee = Integer.toString(custID)+"_"+Integer.toString(cartID);
                     String SQL = "INSERT INTO " + Tablee + "(ID, name, price, discount, category, amount) VALUES(?, ?, ?, ?, ?, ?)";
                     PreparedStatement stt = c.prepareStatement(SQL);
                     stt.setInt(1, ct.cart.get(i).getID());
@@ -46,7 +55,7 @@ public class cartDB {
     }
     public void DisplayCustomerCart(int CustomerID, int cartID){
         System.out.printf("Name            amount\n");
-        String V = Integer.toString(CustomerID)+"_"+Integer.toString(cartID);
+        String V = "C"+Integer.toString(CustomerID)+"_"+Integer.toString(cartID);
         String SQL = "SELECT name, amount from "+V;
         try{
             Statement st = c.createStatement();
@@ -61,7 +70,7 @@ public class cartDB {
     }
     ShoppingCart reOrder(int customerID, int OrderID){
         ShoppingCart sc = new ShoppingCart();
-        String V = Integer.toString(customerID)+"_"+Integer.toString(OrderID);
+        String V = "C"+Integer.toString(customerID)+"_"+Integer.toString(OrderID);
         String SQL = "SELECT name, amount from "+V;
         try {
             Statement st = c.createStatement();

@@ -86,6 +86,5 @@ public class ShoppingCart {
             System.out.printf("%-20d%-20s%-20.2f%-20.2f%-20s%-20d\n", cart.get(i).getID(), cart.get(i).getName(), cart.get(i).getPrice(), cart.get(i).getDiscount(), cart.get(i).getCategory(), cart.get(i).getSize());
         }
     }
-
 }
 

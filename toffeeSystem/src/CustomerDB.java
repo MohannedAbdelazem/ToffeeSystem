@@ -89,7 +89,7 @@ public class CustomerDB {
                 stt.setString(7, Email);
                 stt.setInt(8, loyalityPoints);
                 stt.executeUpdate();
-                System.out.println("Customer added successfully");
+//                System.out.println("Customer added successfully");
             }
             catch (Exception e){
                 System.out.println("Didn't work lol");

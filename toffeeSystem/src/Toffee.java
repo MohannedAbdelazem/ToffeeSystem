@@ -549,15 +549,16 @@ private Scanner scan = new Scanner(System.in);
                 }
                 case 10:{
                     System.out.println("Do you want to add a voucher");
-                    System.out.print("1.Yes");
-                    System.out.print("2.No");
+                    System.out.println("1.Yes");
+                    System.out.println("2.No");
+                    System.out.println("-->");
+
                     int ch = Integer.parseInt(scan.nextLine());
-                    double TP = 0.0;
+                    double TP = Cart.getTotalPrice();
                     switch (ch){
                         case 1:{
                             System.out.print("Enter the voucher ID: ");
                             int VID = Integer.parseInt(scan.nextLine());
-                            TP = Cart.getTotalPrice();
                             double DISCOUNT = vouchers.applyVoucher(VID);
                             if(DISCOUNT == 0.0){
                                 System.out.println("Incorrect voucher lol");
@@ -572,10 +573,11 @@ private Scanner scan = new Scanner(System.in);
                             break;
                         }
                     }
-                    System.out.printf("Your loyalty pts is equal %f\n", customer.getloyalityPoints());
+                    System.out.printf("Your loyalty pts is equal %d\n", customer.getloyalityPoints());
                     if(customer.getloyalityPoints()>5000){
                         System.out.println("Do you want to use your loyalty points to get 50% discount (Note that your loyalty points will decrease by 5000 if you agree)");
                         System.out.println("1.Yes (Any other number for no)");
+                        System.out.println("-->");
                         int CHoice = Integer.parseInt(scan.nextLine());
                         if(CHoice == 1){
                             TP = TP*0.5;
@@ -591,8 +593,10 @@ private Scanner scan = new Scanner(System.in);
                     for (int i = 0;i<Cart.cart.size();i++){
                         System.out.printf("%s\n", Cart.cart.get(i).getName());
                         ItemSize += Cart.cart.get(i).getSize();
+                        Stock ss = new Stock();
+                        ss.DecrementProductSize(Cart.cart.get(i).getID(), Cart.cart.get(i).getSize());
                     }
-                    System.out.printf("Total price = %d\n", TP);
+                    System.out.printf("Total price = %f\n", TP);
                     int LPs = 10*ItemSize + customer.getloyalityPoints();
                     customer.setLoyalityPoints(LPs);
                     System.out.printf("New loyalty points = %d\n", LPs);
